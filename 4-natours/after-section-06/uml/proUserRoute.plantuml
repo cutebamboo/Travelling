@@ -1,0 +1,83 @@
+@startuml Route-Of-Tours
+'skinparam Linetype polyline
+skinparam Linetype ortho
+
+<style>
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+</style>
+
+package toursRoute.js #orange{
+   object "router" as r1{
+   }
+}
+
+package userRoute.js #YellowGreen{
+    object "router" as r2{
+        [**Middleware Chain of Router 1**                                                                             ] as mwc1
+        ..
+        {{
+            object "route('/')" as r111
+            object "get(userController.getAllUsers)" as r112
+            object "post(userController.createUser)" as r113
+            r111 -> r112 : next
+            r112 -> r113 : next
+        }} 
+
+        [**Middleware Chain of Router 2**                                                                             ] as mwc2
+        ..
+        {{
+            object "route('/:id')" as r121
+            object "get(userController.getUser)" as r122
+            object "patch(userController.updateUser)" as r123
+            object "delete(userController.deleteUser)" as r124
+
+            r121 -> r122 : next
+            r122 --> r123 : next
+            r123 -> r124 : next
+        }} 
+
+    }
+}
+
+
+package app.js {
+     object  app {
+        [Process route /api/v1/tours] as alias1
+        ..
+        [Process route /api/v1/users] as alias2
+        
+    }
+    
+}
+
+note right of r2::mwc1
+{{
+    :router\n  .route('/') \n  .get(tourController.getAllTours)\n  .post(tourController.checkBody, tourController.createTour); ;
+}}
+end note
+
+
+note right of r2::mwc2
+{{
+    :router\n  .route('/:id')\n  .get(tourController.getUser)\n  .patch(tourController.updateUser)\n  .delete(tourController.deleteUser);;
+}}
+end note
+
+app::alias1 +--l-> r1 
+app::alias2 +---> r2 : /api/v1/users
+         
+@enduml
+

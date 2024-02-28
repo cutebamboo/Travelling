@@ -1,0 +1,59 @@
+@startuml JSON-Class
+skinparam BackgroundColor #lightblue
+skinparam linetype ortho
+class "JSON" as J1 {
+    JSON parse(string)
+    --
+    STRING stringifgy(json)
+}
+
+class "Object" as O1 {
+    assign()
+    --
+    create() 
+    --
+    defineProperty()
+    --
+    defineProperties()
+    --
+    entries()
+    --
+    freeze()
+    --
+    fromEntries()
+    --
+    getOwnPropertyDescriptor()
+    --
+    getOwnPropertyNames()
+    --
+    getOwnPropertySymbols()
+    --
+    getPrototypeOf()
+    --
+    hasOwn()
+    --
+    Object.is()
+    --
+    isExtensible()
+    --
+    isFrozen()
+    --
+    isSealed()
+    --
+    keys()
+    --
+    preventExtensions()
+    --
+    seal()
+    --
+    setPrototypeOf()
+    --
+    toLocaleString()
+    --
+    values()
+}
+
+O1 ---------r------|> J1
+@enduml
+
+

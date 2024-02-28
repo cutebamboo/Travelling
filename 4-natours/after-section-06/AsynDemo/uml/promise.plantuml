@@ -1,0 +1,33 @@
+@startuml PROMISE
+skinparam actorStyle awesome 
+
+actor "Customer" as C1
+entity "Reception" as R1 #Red
+entity "System Management" as M1 
+
+C1 -> R1: Food Order
+activate R1
+
+R1 ->M1: Resolve if having food \n Food Registration
+R1 -->C1: Reject if no having food
+
+note right of R1
+const p = new Promise( (resolve, reject )=>{
+        //kick off some async work...
+        if (isFoodReady){
+            FoodRegistration();
+            result = "Food is ready to be registered";
+            resolve (result);
+        }
+        else {
+            result = "Food is not ready";
+            reject (result);
+        }   
+    }
+);
+
+p.then((message)=>{console.log(message);})
+ .catch((err)=>{console.log(err)});
+end note
+
+@enduml

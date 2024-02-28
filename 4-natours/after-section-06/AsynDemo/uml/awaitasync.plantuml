@@ -1,0 +1,17 @@
+@startuml Await-Async
+
+(Programming \n using await) as AW #Orange
+(Programing \n using Async) as A1  #LightBlue
+(Asynchronous function\n using Promise) as  P1 #GreenYellow
+(Programming as similar to Synchronous Style) as S #Red
+(Do .. While) as DoWhile
+(While) as While
+(for...) as For
+
+P1 -> AW : allow to use
+AW -> A1 : function contains any \n await programing \n must include async
+AW --> S : allow to write
+S --> DoWhile
+S --> While
+S --> For
+@enduml

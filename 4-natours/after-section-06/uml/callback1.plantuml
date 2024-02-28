@@ -1,0 +1,25 @@
+@startuml SimpleCallbackProcess
+actor User as A1
+entity  "Reception"  as E1 #red
+entity "Managment System" as E2 
+entity "Chef" as E3 #lightblue 
+A1 -> E1 : Food Order
+activate E1
+E1 -> E2 : Food Registation
+activate E2
+E2 -> E2: Total Cost Estimation
+E2 --> E1 : Payment Notification
+E1 --> A1 : Payment Request
+A1 -> E1 : Payment Response
+E1 -> E2 : Food Ordering Completed! 
+E1 --> A1: Paging Device 
+E2 -> E3: Food Making List
+activate E3
+E3 --> E3: Cooking
+E3 --> E2: Food Making Completed! 
+E2 --> A1: Vibrations in Paging Device
+A1 -> E3: Food Getting + Return Paging Device
+E3 -->E1: Return Paging Device
+
+@enduml
+

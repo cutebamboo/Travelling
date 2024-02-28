@@ -1,0 +1,109 @@
+@startuml
+'skinparam Linetype polyline
+skinparam Linetype ortho
+
+<style>
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+</style>
+
+package toursRoute.js #orange{
+    object "router" as r1{
+         {{
+            start
+                if (route="/"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get all tours;
+                    elseif (method is post?) then (yes)
+                        :create tour if valid;
+                    endif
+                elseif (route="/:id"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get tour of id;
+                    elseif (method is patch?) then (yes)
+                        :update tour with id;
+                    elseif (method is delete?) then (yes)
+                        :delete tour with id;
+                    endif
+                else (nothing)
+            endif
+            stop
+        }}
+    }
+   
+}
+
+package userRoute.js #YellowGreen{
+    object "router" as r2
+}
+
+
+package app.js {
+     object  app {
+        [Process route /api/v1/tours] as alias1
+        ..
+        [Process route /api/v1/users] as alias2
+        
+    }
+    
+}
+
+
+note right of app::alias1 #lightgreen
+    {{
+        :const tourRouter = require('./routes/tourRoutes'); ;
+        :app.use('/api/v1/tours', tourRouter); ;
+    }}
+end note
+note right of app::alias2
+    {{
+        :const userRouter = require('./routes/userRoutes');;
+        :app.use('/api/v1/users', userRouter);;
+    }}
+end note
+
+note right of r1
+**Middleware Chain of Router 1**
+{{
+    object "route('/')" as r111
+    object "get(tourController.getAllTours)" as r112
+    object "post(tourController.checkBody, tourController.createTour)" as r113
+    r111 -> r112 : next
+    r112 -> r113 : next
+}} 
+
+**Middleware Chain of Router 2**
+{{
+    object "route('/:id')" as r121
+    object "get(tourController.getTour)" as r122
+    object "patch(tourController.updateTour)" as r123
+    object "delete(tourController.deleteTour)" as r124
+
+    r121 -> r122 : next
+    r122 --> r123 : next
+    r123 -> r124 : next
+}} 
+
+
+end note
+
+
+ app::alias1 +--> r1 : /api/v1/tours
+ app::alias2 +--> r2 : /api/v1/users
+         
+
+
+@enduml
+

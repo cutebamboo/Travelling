@@ -1,0 +1,106 @@
+@startuml
+skinparam Linetype polyline
+'skinparam Linetype ortho
+
+<style>
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+</style>
+
+package toursRoute.js #Orange{
+    object "router" as r1{
+         {{
+            start
+                if (route="/"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get all tours;
+                    elseif (method is post?) then (yes)
+                        :create tour if valid;
+                    endif
+                elseif (route="/:id"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get tour of id;
+                    elseif (method is patch?) then (yes)
+                        :update tour with id;
+                    elseif (method is delete?) then (yes)
+                        :delete tour with id;
+                    endif
+                else (nothing)
+            endif
+            stop
+        }}
+    }
+   
+}
+
+package userRoute.js #YellowGreen {
+    object "router" as r2{
+        {{
+            start
+                if (route="/"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get all users;
+                    elseif (method is post?) then (yes)
+                        :create user if valid info;
+                    endif
+                elseif (route="/:id"?) then (yes)
+                    if (method is get?) then (yes)
+                        :get user of id;
+                    elseif (method is patch?) then (yes)
+                        :update user with id;
+                    elseif (method is delete?) then (yes)
+                        :delete user with id;
+                    endif
+                else (nothing)
+            endif
+            stop
+        }}
+    }
+}
+
+package app.js {
+     object  app {
+        [Process route /api/v1/tours] as alias1
+        ..
+        [Process route /api/v1/users] as alias2
+        
+    }
+    
+}
+
+
+note right of app::alias1 #lightgreen
+    {{
+        :const tourRouter = require('./routes/tourRoutes'); ;
+        :app.use('/api/v1/tours', tourRouter); ;
+    }}
+end note
+note right of app::alias2
+    {{
+        :const userRouter = require('./routes/userRoutes');;
+        :app.use('/api/v1/users', userRouter);;
+    }}
+end note
+
+
+
+
+ app::alias1 +--> r1 : /api/v1/tours
+ app::alias2 +--> r2 : /api/v1/users
+         
+
+
+@enduml
+

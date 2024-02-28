@@ -1,0 +1,162 @@
+@startuml
+'left to right direction
+top to bottom direction
+skinparam actorStyle awesome
+
+skinparam linetype ortho
+skinparam rectangle {
+	BackgroundColor DarkSeaGreen
+	FontStyle Bold
+	FontColor DarkGreen
+}
+skinparam usecase {
+ 	BackgroundColor Pink
+ 	FontColor DarkRed
+ 	FontStyle Bold
+}
+skinparam note {
+	BackgroundColor LightYellow
+	FontColor Black
+}
+
+
+package client {
+    :customer: as customer
+    :customer: as customer1
+}
+together temp{
+    rectangle "Static Page Accessment" as staticPage {
+        note as staticOverviewNote
+            /overview.html
+            ==
+            get: /overview.html
+        end note
+
+        (overview tours \n page) as overviewPage
+
+        note as staticCamperNote
+            /tour.html
+            ==
+            get: /tour.html
+        end note
+        (The page of\n page camper tour) as tourCamperPage
+    }
+
+    rectangle "Data Management" as dataMana {
+        note as apiToursNote
+            /api/v1/tours
+            ==
+            get...
+            post...
+            patch...
+            delete...
+        end note
+
+        note as apiUsersNote
+            /api/v1/users
+            ==
+            get...
+            post...
+            patch...
+            delete...
+        end note
+
+        (Tours Management) as tourMana
+        (Users Management) as userMana
+
+       
+    }
+    
+}
+
+rectangle "Tour Management" as tourTab {
+    (Read all tours) as allTour
+    (Create a specific tour) as createTour
+    (Read specific tour) as singleReadTour
+    (Update specific tour) as updateTour
+    (Delete a specific tour) as deleteTour
+
+    
+}
+
+rectangle "User Management" as userTab {
+    (Read all users) as allUsers
+    (Create a specific user) as createUser
+    (Read specific user) as singleReadUser
+    (Update specific user) as updateUser
+    (Delete a specific user) as deleteUser
+}
+
+
+
+'arrange customer, temp, tourTab
+customer ----[hidden]right---> temp
+temp ----[hidden]right--- tourTab
+
+'arrange inside client box
+customer ---[hidden]down-- customer1
+customer --[hidden]up- client
+customer1 -[hidden]down- client
+'arrange inside temp box
+staticPage --[hidden]down-- dataMana
+
+'arrange inside staticPage
+staticOverviewNote -[hidden]right- overviewPage
+staticOverviewNote -[hidden]down- staticCamperNote
+staticCamperNote -[hidden]right- tourCamperPage
+overviewPage -[hidden]down- tourCamperPage
+
+'arrange inside dataMana
+apiToursNote -[hidden]right- tourMana
+apiToursNote -[hidden]down- apiUsersNote
+apiUsersNote -[hidden]right- userMana
+tourMana -[hidden]down- userMana
+
+'arrange dataMana, tourTab, userMana, userTab
+dataMana -[hidden]right- tourTab
+tourTab  -[hidden]right- userTab
+
+'arrange indside tourTab
+allTour -[hidden]down-> createTour
+createTour -[hidden]down-> singleReadTour
+singleReadTour -[hidden]down-> updateTour
+updateTour -[hidden]down-> deleteTour 
+
+'arrange indside userTab
+allUsers -[hidden]down-> createUser
+createUser -[hidden]down-> singleReadUser
+singleReadUser -[hidden]down-> updateUser
+updateUser -[hidden]down-> deleteUser
+
+'arrange offical association 
+customer -right-> staticOverviewNote
+customer -right-> staticCamperNote
+customer -right-> apiToursNote
+customer -right-> apiUsersNote
+staticOverviewNote -right-> overviewPage
+staticCamperNote -right-> tourCamperPage
+apiToursNote -right-> tourMana
+apiUsersNote -right-> userMana
+
+tourMana -right-> allTour : get('/')
+tourMana -right-> createTour: post('/')
+tourMana -right-> singleReadTour: get('/:id')
+tourMana -right-> updateTour: patch('/:id')
+tourMana -right-> deleteTour: delete('/:id')
+
+
+userMana -right-> allUsers : get('/')
+userMana -right-> createUser: post('/')
+userMana -right-> singleReadUser: get('/:id')
+userMana -right-> updateUser: patch('/:id')
+userMana -right-> deleteUser: delete('/:id')
+
+
+
+
+ 
+
+
+
+
+@enduml

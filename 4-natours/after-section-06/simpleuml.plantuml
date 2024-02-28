@@ -1,0 +1,13 @@
+@startuml
+
+object Car {
+    speed: 0
+    +accelerate(speedIncrement: int)
+    +brake(speedDecrement: int)
+}
+
+Car -> Car: accelerate(10)
+Car -> Car: brake(5)
+Car.speed
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+<style>
+note {
+    BackgroundColor #lightgreen
+   
+}
+ activityDiagram {
+     BackgroundColor #yellow
+}
+</style>
+
+package express {
+    object json
+    object static
+}
+
+package app.js {
+    object  app {
+        [Parse Request To JSON] as alias1 
+        ..
+        [Configure Default File Folder] as alias2 
+        ..
+        "...."
+
+    }
+    
+}
+
+note right of app::alias1 #lightgreen
+    {{
+        :app.use(express.json());
+    }}
+end note
+
+note right of app::alias2
+    {{
+        :app.use(express.static(`${__dirname}/public`));
+    }}
+end note
+
+ app::alias1 --> json 
+ app::alias2 --> static 
+
+@enduml

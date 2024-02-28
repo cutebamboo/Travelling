@@ -1,0 +1,30 @@
+@startuml CallBackHell
+skinparam linetype polyline
+object FoodOrder  {
+     ToDoList 
+     ..
+     callback
+}
+
+ object FoodRegistration{
+    ToDoList   
+    ..
+    callback 
+}
+
+object PaymentRequest{
+    ToDoList
+    ..
+    callback 
+}
+
+object PaymentResponse{
+    ToDoList
+    ..
+    callback 
+}
+
+FoodOrder::callback -r-> FoodRegistration::ToDoList
+FoodRegistration::callback -right-> PaymentRequest::ToDoList
+PaymentRequest::callback -right-> PaymentResponse::ToDoList
+@enduml

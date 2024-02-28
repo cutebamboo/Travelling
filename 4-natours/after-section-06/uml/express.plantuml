@@ -1,0 +1,31 @@
+@startuml express
+skinparam BackgroundColor #skyblue
+skinparam ActivityBackgroundColor #physical
+start
+:const app = require('express');";
+:app.use(mw1);
+:app.use(mw2,mw3);
+:...;
+note right
+    use middleware functions to process information in request, response message
+end note
+:app.use(mw4);
+:app.get('/route/subroute',(req,res) => {\n..processing...\n});
+note right
+    use middleware functions to perform CRUD (get) information from server
+end note
+:app.post('/route/subroute',(req,res) => {\n..processing...\n});
+:app.put('/route/subroute',(req,res) => {\n..processing...\n});
+:app.patch('/route/subroute',(req,res) => {\n..processing...\n});
+:app.delete('/route/subroute',(req,res) => {\n..processing...\n});
+:app.use((err,req,res)=>{\n..processing...\n});
+note right
+    use middleware functions to process any error
+end note
+:app.use((req,res)=>{\n..processing...\n});
+note right
+    use middleware functions to process the default case
+end note
+stop
+
+@enduml

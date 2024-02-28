@@ -1,0 +1,60 @@
+@startuml
+
+package express {
+    object json
+    object static
+
+}
+
+
+package customCallback {
+    object consoleNotifications {
+        callback (req, res,next)
+    }
+
+    object getDateTime{
+        callback (req, res, next)
+    }
+    
+}
+
+package toursRoute.js {
+    object "router" as r1
+}
+
+package userRoute.js {
+    object "router" as r2
+}
+
+
+
+package "**app.js**" as app.js {
+    map  "**app**" as app {
+        [parse request's body to JSON] *-> express.json
+        [configure the default file folder] *-> express.static
+        [notify to console when request comes] *--> customCallback.consoleNotifications
+        [Get Date-time when request comes] *--> customCallback.getDateTime
+        [Process route /api/v1/tours] *---> toursRoute.js.r1
+        [Process route /api/v1/users] *---> userRoute.js.r2
+
+    }
+
+    object listen{
+    } 
+
+}
+
+package server.js {
+
+    map "app" as a1 {
+        listen *---> app.js.listen
+    }
+
+}
+
+server.js --|> app.js
+
+app -> listen
+
+
+@enduml
